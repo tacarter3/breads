@@ -8,4 +8,6 @@ body {
     margin: auto;
   }
 
- 
+ .wrapper {
+   text-align: center;
+ }

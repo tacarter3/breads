@@ -7,18 +7,21 @@ function Index ({breads, title}) {
       <Default title={title}>
         <h2>Index Page!</h2>
         {/* <p> I have {breads[0].name} bread!</p> */}
-        <ul>
+        <ol>
             {
                 breads.map((bread,index) => {
                     return (<li key={index}>
                         <a href={`/breads/${bread.id}`}>
                         {bread.name}
                         </a>
+                        <ul>
+                            <ol>{bread.getBakedBy()}</ol>
+                        </ul>
                     </li>)
                 })
                 
             }
-        </ul>
+        </ol>
         <div className="newButton">
             <a href="/breads/new"><button>Add a new bread</button></a>
         </div>
