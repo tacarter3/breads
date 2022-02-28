@@ -2,22 +2,27 @@ const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
 const seed = require('../models/seed.js')
+const Baker = require('../models/baker.js')
 
 
 // INDEX
 breads.get('/', (req, res) => {
-  Bread.find()
-    .then(foundBreads => {
-      res.render('index', {
+  Baker.find()
+    .then(foundBakers => {
+      Bread.find()
+      .then(foundBreads => {
+        res.render('index', {
               breads: foundBreads,
+              bakers: foundBakers,
               title: 'Index Page'
-
-            })
+        })
       })
+    })
 })
 
 // CREATE
 breads.post('/', (req, res) => {
+  console.log(req.body)
   if (!req.body.image) {
     req.body.image = undefined
   }
@@ -32,14 +37,18 @@ breads.post('/', (req, res) => {
 
 // NEW
 breads.get('/new', (req, res) => {
-  res.render('new')
+  Baker.find()
+    .then(foundBakers => {
+      res.render('new', {
+        bakers: foundBakers
+      })
+    })
 })
 // SHOW
 breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
+      .populate('baker')
       .then(foundBread => {
-        const bakedBy = foundBread.getBakedBy()
-        console.log(bakedBy)
         res.render('show', {
               bread: foundBread
           })
@@ -83,12 +92,17 @@ breads.put('/:id', (req, res) => {
 })
 // EDIT
 breads.get('/:id/edit', (req, res) => {
-  Bread.findById(req.params.id) 
-    .then(foundBread => { 
-      res.render('edit', {
-        bread: foundBread 
+  Baker.find()
+  .then(foundBakers => {
+    
+    Bread.findById(req.params.id) 
+      .then(foundBread => { 
+        res.render('edit', {
+          bread: foundBread,
+          bakers: foundBakers
       })
     })
+  })
 })
 // Create Multiples
 
