@@ -1,5 +1,6 @@
 // require mongoose 
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 // creating shorthand for the Schema constructor 
 const { Schema } = mongoose 
 
@@ -9,7 +10,7 @@ const breadSchema = new Schema({
   hasGluten: {type: Boolean, default: false},
   image: { type: String, default: 'http://place-hold.it/500x500.png' },
   baker: {
-    type: Schema.Types.ObjectID,
+    type: Schema.Types.ObjectId,
     ref: 'Baker'
   }
 })
@@ -18,10 +19,6 @@ const breadSchema = new Schema({
 breadSchema.methods.getBakedBy = function(){
   return `${this.name} was baked with love by ${this.baker.name}, who has been with us since ${this.baker.startDate.getFullYear()}`
 }
-// Assign a function to the "statics" object of our breadSchema
-// breadSchema.methods.getBakedBy = function() {
-//   return this.find({ baker: 'Chandler'})
-// }  
 
 // model and export
 const Bread = mongoose.model('Bread', breadSchema)

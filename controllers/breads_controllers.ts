@@ -1,4 +1,5 @@
-const express = require('express')
+// const express = require('express')
+import express from 'express'
 const breads = express.Router()
 const Bread = require('../models/bread.js')
 const seed = require('../models/seed.js')
@@ -6,18 +7,14 @@ const Baker = require('../models/baker.js')
 
 
 // INDEX
-breads.get('/', (req, res) => {
-  Baker.find()
-    .then(foundBakers => {
-      Bread.find()
-      .then(foundBreads => {
+breads.get('/', async (req, res) => {
+  const foundBakers = await Baker.find().lean()
+  const foundBreads = await Bread.find().limit(2).lean()
         res.render('index', {
               breads: foundBreads,
               bakers: foundBakers,
               title: 'Index Page'
         })
-      })
-    })
 })
 
 // CREATE
@@ -38,7 +35,7 @@ breads.post('/', (req, res) => {
 // NEW
 breads.get('/new', (req, res) => {
   Baker.find()
-    .then(foundBakers => {
+    .then((foundBakers: any) => {
       res.render('new', {
         bakers: foundBakers
       })
@@ -48,12 +45,12 @@ breads.get('/new', (req, res) => {
 breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
       .populate('baker')
-      .then(foundBread => {
+      .then((foundBread: any) => {
         res.render('show', {
               bread: foundBread
           })
       })
-      .catch(err => {
+      .catch((err: any) => {
         res.send('404')
       })
 })
@@ -71,10 +68,10 @@ breads.get('/:id', (req, res) => {
 
 breads.delete('/:id', (req, res) => {
   Bread.findByIdAndDelete(req.params.id) 
-    .then( 
+    .then((deletedBread: any) => {
       res.status(303).redirect('/breads')
-    )
-    .catch(err => res.render('404'))
+    })
+    .catch((err: any) => res.render('404'))
 })
 
 // UPDATE
@@ -85,7 +82,7 @@ breads.put('/:id', (req, res) => {
     req.body.hasGluten = false
   }
   Bread.findByIdAndUpdate(req.params.id, req.body, { new: true }) 
-    .then(updatedBread => {
+    .then((updatedBread: any) => {
       console.log(updatedBread) 
       res.redirect(`/breads/${req.params.id}`) 
     })
@@ -93,10 +90,10 @@ breads.put('/:id', (req, res) => {
 // EDIT
 breads.get('/:id/edit', (req, res) => {
   Baker.find()
-  .then(foundBakers => {
+  .then((foundBakers: any) => {
     
     Bread.findById(req.params.id) 
-      .then(foundBread => { 
+      .then((foundBread: any) => { 
         res.render('edit', {
           bread: foundBread,
           bakers: foundBakers
@@ -108,7 +105,7 @@ breads.get('/:id/edit', (req, res) => {
 
 breads.get('/data/seed', (req, res) => {
   Bread.insertMany(seed)
-  .then(createdBreads => {
+  .then((createdBreads: any) => {
     res.redirect('/breads')
   })
 })

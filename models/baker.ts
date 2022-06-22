@@ -1,5 +1,5 @@
 // dependencies
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const { Schema } = mongoose
 const Bread = require('./bread')
 
@@ -28,6 +28,15 @@ bakerSchema.virtual('breads', {
     localField: '_id',
     foreignField: 'baker'
 })
+
+// bakerSchema.pre('findOneAndDelete', function()  {
+//     console.log('deleting')
+// })
+
+// hooks 
+bakerSchema.post('findOneAndDelete', function() {
+    
+})            
 
 // model and export
 const Baker = mongoose.model('Baker', bakerSchema)

@@ -1,7 +1,8 @@
-const React = require('react')
+// const React = require('react')
+import React from 'react';
 const Default = require('./layouts/Default')
 
-function Show ({bread}) {
+function Show ({bread}: {bread:any}) {
   console.log(bread.name)
     return (
       <Default>

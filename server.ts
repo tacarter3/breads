@@ -32,19 +32,19 @@ const bakersController = require('./controllers/bakers_controller.js')
 app.use('/bakers', bakersController)
 
 // ROUTES
-app.get('/', (req, res) => {
+app.get('/', (req:any, res:any) => {
     res.redirect('/breads')
   })
 
 // 404 Page
-app.get('*', (req, res) => {
+app.get('*', (req:any, res:any) => {
   res.send('404')
 })
 
 // database
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
-  .then(m => console.log('db connected'))
-  .catch(e => console.log(e))
+  .then(() => console.log('db connected'))
+  .catch((e: any) => console.log(e))
 
 // LISTEN
 app.listen(PORT, () => {

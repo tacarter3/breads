@@ -1,6 +1,7 @@
-const React = require('react')
+// const React = require('react')
+import React from 'react'
 
-function Default(html) {
+function Default(html: any) {
     
   return (
     <html>

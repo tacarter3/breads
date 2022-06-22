@@ -1,5 +1,6 @@
 // dependencies
-const express = require('express')
+// const express = require('express')
+import express from 'express';
 const baker = express.Router()
 const Baker = require('../models/baker.js')
 const bakerSeedData = require('../models/baker_seed.js')
@@ -8,7 +9,7 @@ const bakerSeedData = require('../models/baker_seed.js')
 baker.get('/', (req, res) => {
     Baker.find()
         .populate('breads')
-        .then(foundBakers => {
+        .then((foundBakers: any) => {
             res.send(foundBakers)
         })
 })
@@ -23,11 +24,22 @@ baker.get('/data/seed', (req, res) => {
 
 baker.get('/:id', (req, res) => {
     Baker.findById(req.params.id)
-        .populate('breads')
-        .then(foundBaker => {
+        .populate({
+            path: 'breads',
+            options: { limit: 5 }
+        })
+        .then((foundBaker: any) => {
             res.render('bakerShow', {
                 baker: foundBaker
             })
+        })
+})
+
+// Delete
+baker.delete('/:id', (req, res) => {
+    Baker.findByIdAndDelete(req.params.id)
+        .then((deletedBaker: any) => {
+            res.status(303).redirect('/breads')
         })
 })
 // export

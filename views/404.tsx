@@ -1,4 +1,4 @@
-const React = require('react')
+import React from 'react'
 const breads = require('../controllers/breads_controllers')
 const Default = require('./layouts/Default')
 
